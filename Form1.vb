@@ -1,32 +1,43 @@
-﻿Public Class Form1
+Public Class Form1
 
-    ' Variables for calculator state
-    Private firstOperand As Nullable(Of Double) = Nothing
-    Private currentOperator As String = ""
-    Private isNewEntry As Boolean = True
+    ' ==============================
+    ' 🔹 GLOBAL VARIABLES
+    ' ==============================
+    Dim dblFirstNumber As Double   ' First number
+    Dim dblSecondNumber As Double  ' Second number
+    Dim dblResult As Double        ' Result
+    Dim strOperator As String = "" ' Operator (+, -, ×, ÷)
+    Dim blnNewEntry As Boolean = True ' New entry flag (True = replace, False = append)
 
-    ' Constructor – always keep this
+
+    ' ==============================
+    ' 🔹 CONSTRUCTOR
+    ' ==============================
     Public Sub New()
-        ' This call is required by the designer.
         InitializeComponent()
+        Me.KeyPreview = True ' Enable keyboard input
     End Sub
 
-    ' === DIGIT & DOT BUTTONS ===
+
+
+    ' ==============================
+    ' 🔹 DIGIT & DECIMAL BUTTONS
+    ' ==============================
     Private Sub Digit_Click(sender As Object, e As EventArgs) _
         Handles btn0.Click, btn1.Click, btn2.Click, btn3.Click,
                 btn4.Click, btn5.Click, btn6.Click, btn7.Click,
-                btn8.Click, btn9.Click, btnDot.Click
+                btn8.Click, btn9.Click, btnDecimal.Click
 
         Dim btn As Button = CType(sender, Button)
         Dim digit As String = btn.Text
 
-        If isNewEntry Then
+        If blnNewEntry Then
             If digit = "." Then
                 lblResult.Text = "0."
             Else
                 lblResult.Text = digit
             End If
-            isNewEntry = False
+            blnNewEntry = False
         Else
             ' Prevent multiple dots
             If digit = "." AndAlso lblResult.Text.Contains(".") Then Exit Sub
@@ -34,100 +45,117 @@
         End If
     End Sub
 
-    ' === OPERATOR BUTTONS (+, -, x, /) ===
+
+    ' ==============================
+    ' 🔹 OPERATOR BUTTONS (+, -, ×, ÷)
+    ' ==============================
     Private Sub Operator_Click(sender As Object, e As EventArgs) _
-        Handles btnAdd.Click, btnSub.Click, btnMul.Click, btnDiv.Click
+    Handles btnAdd.Click, btnSub.Click, btnMul.Click, btnDiv.Click
 
+        dblFirstNumber = Val(lblResult.Text) ' Save current number
         Dim btn As Button = CType(sender, Button)
-        Dim op As String = btn.Text
-        Dim currentValue As Double
 
-        If Not Double.TryParse(lblResult.Text, currentValue) Then
-            lblResult.Text = "Error"
-            Exit Sub
-        End If
+        ' Store the operator internally for computation
+        Select Case btn.Text
+            Case "X" : strOperator = "*"   ' internal value
+            Case "÷" : strOperator = "/"   ' internal value
+            Case Else : strOperator = btn.Text
+        End Select
 
-        If firstOperand Is Nothing Then
-            firstOperand = currentValue
-            currentOperator = op
-            lblExpression.Text = firstOperand.ToString() & " " & currentOperator
-            isNewEntry = True
-        Else
-            Dim result As Double = Compute(firstOperand.Value, currentValue, currentOperator)
-            lblResult.Text = FormatResult(result)
-            firstOperand = result
-            currentOperator = op
-            lblExpression.Text = firstOperand.ToString() & " " & currentOperator
-            isNewEntry = True
-        End If
+        ' Show expression with pretty operator
+        lblExpression.Text = dblFirstNumber & " " & GetDisplayOperator(strOperator)
+        blnNewEntry = True
     End Sub
 
-    ' === EQUALS BUTTON ===
+    Private Function GetDisplayOperator(op As String) As String
+        Select Case op
+            Case "*" : Return "X"
+            Case "/" : Return "÷"
+            Case Else : Return op
+        End Select
+    End Function
+
+
+    ' ==============================
+    ' 🔹 EQUALS BUTTON (=)
+    ' ==============================
     Private Sub btnEquals_Click(sender As Object, e As EventArgs) Handles btnEquals.Click
-        If firstOperand Is Nothing OrElse currentOperator = "" Then Exit Sub
+        dblSecondNumber = Val(lblResult.Text)
 
-        Dim secondOperand As Double
-        If Not Double.TryParse(lblResult.Text, secondOperand) Then
-            lblResult.Text = "Error"
-            Exit Sub
-        End If
+        Select Case strOperator
+            Case "+"
+                dblResult = dblFirstNumber + dblSecondNumber
+            Case "-"
+                dblResult = dblFirstNumber - dblSecondNumber
+            Case "*"
+                dblResult = dblFirstNumber * dblSecondNumber
+            Case "/"
+                If dblSecondNumber = 0 Then
+                    lblResult.Text = "Error"
+                    Exit Sub
+                End If
+                dblResult = dblFirstNumber / dblSecondNumber
+        End Select
 
-        Dim result As Double = Compute(firstOperand.Value, secondOperand, currentOperator)
-        lblExpression.Text = firstOperand.ToString() & " " & currentOperator & " " & secondOperand & " ="
-        lblResult.Text = FormatResult(result)
-
-        ' Reset for next calculation
-        firstOperand = Nothing
-        currentOperator = ""
-        isNewEntry = True
+        lblExpression.Text = dblFirstNumber & " " & GetDisplayOperator(strOperator) & " " & dblSecondNumber & " ="
+        lblResult.Text = dblResult.ToString()
+        blnNewEntry = True
     End Sub
 
-    ' === CLEAR BUTTON (CLR) ===
+
+    ' ==============================
+    ' 🔹 CLEAR BUTTON (C)
+    ' ==============================
     Private Sub btnClear_Click(sender As Object, e As EventArgs) Handles btnClear.Click
         lblResult.Text = "0"
         lblExpression.Text = ""
-        firstOperand = Nothing
-        currentOperator = ""
-        isNewEntry = True
+        dblFirstNumber = 0
+        dblSecondNumber = 0
+        dblResult = 0
+        strOperator = ""
+        blnNewEntry = True
     End Sub
 
-    ' === BACKSPACE BUTTON (⌫) ===
+
+    ' ==============================
+    ' 🔹 BACKSPACE BUTTON (⌫)
+    ' ==============================
     Private Sub btnBack_Click(sender As Object, e As EventArgs) Handles btnBack.Click
-        If isNewEntry Then
+        If blnNewEntry Then
             lblResult.Text = "0"
         ElseIf lblResult.Text.Length > 1 Then
             lblResult.Text = lblResult.Text.Substring(0, lblResult.Text.Length - 1)
         Else
             lblResult.Text = "0"
-            isNewEntry = True
+            blnNewEntry = True
         End If
     End Sub
 
-    ' === HELPER: COMPUTE ===
-    Private Function Compute(a As Double, b As Double, op As String) As Double
-        Select Case op
-            Case "+"
-                Return a + b
-            Case "-"
-                Return a - b
-            Case "x", "*"
-                Return a * b
-            Case "/"
-                If b = 0 Then Return Double.NaN
-                Return a / b
-            Case Else
-                Return b
-        End Select
-    End Function
 
-    ' === HELPER: FORMAT RESULT ===
-    Private Function FormatResult(val As Double) As String
-        If Double.IsNaN(val) OrElse Double.IsInfinity(val) Then Return "Error"
-        If val = Math.Truncate(val) Then
-            Return val.ToString("0")
-        Else
-            Return val.ToString()
-        End If
-    End Function
+    ' ==============================
+    ' 🔹 KEYBOARD HANDLING
+    ' ==============================
+    Private Sub Form1_KeyDown(sender As Object, e As KeyEventArgs) Handles Me.KeyDown
+        Select Case e.KeyCode
+            Case Keys.Enter : btnEquals.PerformClick()
+            Case Keys.Escape : btnClear.PerformClick()
+            Case Keys.Back : btnBack.PerformClick()
+            Case Keys.D0, Keys.NumPad0 : btn0.PerformClick()
+            Case Keys.D1, Keys.NumPad1 : btn1.PerformClick()
+            Case Keys.D2, Keys.NumPad2 : btn2.PerformClick()
+            Case Keys.D3, Keys.NumPad3 : btn3.PerformClick()
+            Case Keys.D4, Keys.NumPad4 : btn4.PerformClick()
+            Case Keys.D5, Keys.NumPad5 : btn5.PerformClick()
+            Case Keys.D6, Keys.NumPad6 : btn6.PerformClick()
+            Case Keys.D7, Keys.NumPad7 : btn7.PerformClick()
+            Case Keys.D8, Keys.NumPad8 : btn8.PerformClick()
+            Case Keys.D9, Keys.NumPad9 : btn9.PerformClick()
+            Case Keys.Decimal, Keys.OemPeriod : btnDecimal.PerformClick()
+            Case Keys.Add : btnAdd.PerformClick()
+            Case Keys.Subtract, Keys.OemMinus : btnSub.PerformClick()
+            Case Keys.Multiply : btnMul.PerformClick()
+            Case Keys.Divide, Keys.OemQuestion : btnDiv.PerformClick()
+        End Select
+    End Sub
 
 End Class
