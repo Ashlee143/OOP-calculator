@@ -1,4 +1,4 @@
-﻿<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()> _
+<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()> _
 Partial Class Form1
     Inherits System.Windows.Forms.Form
 
@@ -31,7 +31,7 @@ Partial Class Form1
         Me.btnMul = New System.Windows.Forms.Button()
         Me.btn4 = New System.Windows.Forms.Button()
         Me.btn1 = New System.Windows.Forms.Button()
-        Me.btnDot = New System.Windows.Forms.Button()
+        Me.btnDecimal = New System.Windows.Forms.Button()
         Me.btn3 = New System.Windows.Forms.Button()
         Me.btn8 = New System.Windows.Forms.Button()
         Me.btnSub = New System.Windows.Forms.Button()
@@ -43,31 +43,32 @@ Partial Class Form1
         Me.btnClear = New System.Windows.Forms.Button()
         Me.btnBack = New System.Windows.Forms.Button()
         Me.btnDiv = New System.Windows.Forms.Button()
+        Me.btnNeg = New System.Windows.Forms.Button()
         Me.SuspendLayout()
         '
         'lblExpression
         '
         Me.lblExpression.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
             Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.lblExpression.BackColor = System.Drawing.Color.WhiteSmoke
+        Me.lblExpression.BackColor = System.Drawing.Color.White
         Me.lblExpression.Font = New System.Drawing.Font("Century Gothic", 24.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.lblExpression.ForeColor = System.Drawing.Color.Black
-        Me.lblExpression.Location = New System.Drawing.Point(21, 29)
+        Me.lblExpression.Location = New System.Drawing.Point(12, 23)
         Me.lblExpression.Name = "lblExpression"
-        Me.lblExpression.Size = New System.Drawing.Size(438, 49)
+        Me.lblExpression.RightToLeft = System.Windows.Forms.RightToLeft.No
+        Me.lblExpression.Size = New System.Drawing.Size(456, 64)
         Me.lblExpression.TabIndex = 0
         Me.lblExpression.Text = "                                        "
+        Me.lblExpression.TextAlign = System.Drawing.ContentAlignment.BottomRight
         '
         'lblResult
         '
-        Me.lblResult.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
-            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.lblResult.AutoSize = True
-        Me.lblResult.Font = New System.Drawing.Font("Century Gothic", 37.8!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.lblResult.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.lblResult.Font = New System.Drawing.Font("Century Gothic", 28.2!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.lblResult.ForeColor = System.Drawing.Color.Black
-        Me.lblResult.Location = New System.Drawing.Point(17, 112)
+        Me.lblResult.Location = New System.Drawing.Point(12, 105)
         Me.lblResult.Name = "lblResult"
-        Me.lblResult.Size = New System.Drawing.Size(68, 77)
+        Me.lblResult.Size = New System.Drawing.Size(456, 67)
         Me.lblResult.TabIndex = 1
         Me.lblResult.Text = "0"
         Me.lblResult.TextAlign = System.Drawing.ContentAlignment.MiddleRight
@@ -150,18 +151,18 @@ Partial Class Form1
         Me.btn1.Text = "1"
         Me.btn1.UseVisualStyleBackColor = False
         '
-        'btnDot
+        'btnDecimal
         '
-        Me.btnDot.BackColor = System.Drawing.Color.AliceBlue
-        Me.btnDot.Cursor = System.Windows.Forms.Cursors.Hand
-        Me.btnDot.Font = New System.Drawing.Font("Century Gothic", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.btnDot.ForeColor = System.Drawing.Color.Black
-        Me.btnDot.Location = New System.Drawing.Point(12, 536)
-        Me.btnDot.Name = "btnDot"
-        Me.btnDot.Size = New System.Drawing.Size(110, 80)
-        Me.btnDot.TabIndex = 8
-        Me.btnDot.Text = "."
-        Me.btnDot.UseVisualStyleBackColor = False
+        Me.btnDecimal.BackColor = System.Drawing.Color.AliceBlue
+        Me.btnDecimal.Cursor = System.Windows.Forms.Cursors.Hand
+        Me.btnDecimal.Font = New System.Drawing.Font("Century Gothic", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.btnDecimal.ForeColor = System.Drawing.Color.Black
+        Me.btnDecimal.Location = New System.Drawing.Point(242, 536)
+        Me.btnDecimal.Name = "btnDecimal"
+        Me.btnDecimal.Size = New System.Drawing.Size(110, 80)
+        Me.btnDecimal.TabIndex = 8
+        Me.btnDecimal.Text = "."
+        Me.btnDecimal.UseVisualStyleBackColor = False
         '
         'btn3
         '
@@ -249,7 +250,7 @@ Partial Class Form1
         Me.btnAdd.ForeColor = System.Drawing.Color.Black
         Me.btnAdd.Location = New System.Drawing.Point(358, 450)
         Me.btnAdd.Name = "btnAdd"
-        Me.btnAdd.Size = New System.Drawing.Size(110, 166)
+        Me.btnAdd.Size = New System.Drawing.Size(110, 80)
         Me.btnAdd.TabIndex = 15
         Me.btnAdd.Text = "+"
         Me.btnAdd.UseVisualStyleBackColor = False
@@ -260,7 +261,7 @@ Partial Class Form1
         Me.btnEquals.Cursor = System.Windows.Forms.Cursors.Hand
         Me.btnEquals.Font = New System.Drawing.Font("Century Gothic", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.btnEquals.ForeColor = System.Drawing.Color.Black
-        Me.btnEquals.Location = New System.Drawing.Point(242, 536)
+        Me.btnEquals.Location = New System.Drawing.Point(358, 536)
         Me.btnEquals.Name = "btnEquals"
         Me.btnEquals.Size = New System.Drawing.Size(110, 80)
         Me.btnEquals.TabIndex = 16
@@ -303,15 +304,29 @@ Partial Class Form1
         Me.btnDiv.Name = "btnDiv"
         Me.btnDiv.Size = New System.Drawing.Size(110, 80)
         Me.btnDiv.TabIndex = 21
-        Me.btnDiv.Text = "/"
+        Me.btnDiv.Text = "÷"
         Me.btnDiv.UseVisualStyleBackColor = False
+        '
+        'btnNeg
+        '
+        Me.btnNeg.BackColor = System.Drawing.Color.AliceBlue
+        Me.btnNeg.Cursor = System.Windows.Forms.Cursors.Hand
+        Me.btnNeg.Font = New System.Drawing.Font("Century Gothic", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.btnNeg.ForeColor = System.Drawing.Color.Black
+        Me.btnNeg.Location = New System.Drawing.Point(12, 536)
+        Me.btnNeg.Name = "btnNeg"
+        Me.btnNeg.Size = New System.Drawing.Size(110, 80)
+        Me.btnNeg.TabIndex = 22
+        Me.btnNeg.Text = "±"
+        Me.btnNeg.UseVisualStyleBackColor = False
         '
         'Form1
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(8.0!, 17.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.BackColor = System.Drawing.Color.White
+        Me.BackColor = System.Drawing.SystemColors.Window
         Me.ClientSize = New System.Drawing.Size(480, 623)
+        Me.Controls.Add(Me.btnNeg)
         Me.Controls.Add(Me.btnDiv)
         Me.Controls.Add(Me.btnBack)
         Me.Controls.Add(Me.btnClear)
@@ -323,7 +338,7 @@ Partial Class Form1
         Me.Controls.Add(Me.btnSub)
         Me.Controls.Add(Me.btn8)
         Me.Controls.Add(Me.btn3)
-        Me.Controls.Add(Me.btnDot)
+        Me.Controls.Add(Me.btnDecimal)
         Me.Controls.Add(Me.btn1)
         Me.Controls.Add(Me.btn4)
         Me.Controls.Add(Me.btnMul)
@@ -336,11 +351,12 @@ Partial Class Form1
         Me.ForeColor = System.Drawing.Color.Black
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog
         Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)
+        Me.MaximizeBox = False
         Me.Name = "Form1"
         Me.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Hide
+        Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen
         Me.Text = "Calculator"
         Me.ResumeLayout(False)
-        Me.PerformLayout()
 
     End Sub
 
@@ -352,7 +368,7 @@ Partial Class Form1
     Friend WithEvents btnMul As Button
     Friend WithEvents btn4 As Button
     Friend WithEvents btn1 As Button
-    Friend WithEvents btnDot As Button
+    Friend WithEvents btnDecimal As Button
     Friend WithEvents btn3 As Button
     Friend WithEvents btn8 As Button
     Friend WithEvents btnSub As Button
@@ -417,7 +433,7 @@ Partial Class Form1
 
     End Sub
 
-    Private Sub Button7_Click(sender As Object, e As EventArgs) Handles btnDot.Click
+    Private Sub Button7_Click(sender As Object, e As EventArgs) Handles btnDecimal.Click
 
     End Sub
 
@@ -452,4 +468,6 @@ Partial Class Form1
     Private Sub Button5_Click(sender As Object, e As EventArgs) Handles btn4.Click
 
     End Sub
+
+    Friend WithEvents btnNeg As Button
 End Class
